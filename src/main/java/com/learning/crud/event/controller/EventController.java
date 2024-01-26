@@ -46,9 +46,10 @@ public class EventController {
     @PostMapping("/events")
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {
         try {
-            Event _event = eventRepository.save(new Event(event.getTitle(),event.getDateTime(),event.getOrganizer(),event.getGuests()));
+            Event _event = eventRepository.save(new Event(event.getTitle(),event.getDateTime(),event.getPosition(),event.getOrganizer(),event.getGuests()));
             return new ResponseEntity<>(_event,HttpStatus.CREATED);
         }catch (Exception e) {
+            System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -60,6 +61,7 @@ public class EventController {
             Event _event = eventOptional.get();
             _event.setTitle(event.getTitle());
             _event.setDateTime(event.getDateTime());
+            _event.setPosition(event.getPosition());
             _event.setOrganizer(event.getOrganizer());
             _event.setGuests(event.getGuests());
             return new ResponseEntity<>(eventRepository.save(_event),HttpStatus.OK);

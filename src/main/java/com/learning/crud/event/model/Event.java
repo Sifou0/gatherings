@@ -13,8 +13,8 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "events")
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Event {
 
     @Id
@@ -27,15 +27,25 @@ public class Event {
     @Column(nullable = false)
     private LocalDateTime dateTime;
 
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "position_id")
+    private Position position;
+
     @ManyToOne
     private User organizer;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany
+    @JoinTable(
+            name = "events_guests",
+            joinColumns = @JoinColumn(name = "guests_id"),
+            inverseJoinColumns = @JoinColumn(name = "events_id")
+    )
     private List<User> guests = new ArrayList<>();
 
-    public Event(String title, LocalDateTime dateTime, User organizer, List<User> guests) {
+    public Event(String title, LocalDateTime dateTime, Position position,User organizer, List<User> guests) {
         this.title = title;
         this.dateTime = dateTime;
+        this.position = position;
         this.organizer = organizer;
         this.guests = guests;
     }
