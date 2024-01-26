@@ -30,7 +30,7 @@ public class Event {
     @ManyToOne
     private User organizer;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY)
     private List<User> guests = new ArrayList<>();
 
     public Event(String title, LocalDateTime dateTime, User organizer, List<User> guests) {
